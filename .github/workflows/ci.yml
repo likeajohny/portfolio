@@ -20,6 +20,7 @@ jobs:
     needs:
       - tag
     uses: ./.github/workflows/publish.yml
+    secrets: inherit
     with:
       image-tag: ${{ needs.tag.outputs.image-tag }}
 
