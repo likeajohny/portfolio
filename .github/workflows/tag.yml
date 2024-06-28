@@ -1,5 +1,8 @@
 on:
   workflow_call:
+    outputs:
+      image-name:
+        value: ${{ jobs.tag-image.outputs.image-name }}
 
 jobs:
   tag-image:
