@@ -1,22 +1,16 @@
-name: Publish Image
+name: Publish
 
 on:
-  workflow_dispatch:
-  push:
-
-env:
-  REGISTRY: ghcr.io
+  workflow_call:
+    inputs:
+      image-tag:
+        description: 'Tag of the image to publish'
+        required: true
+        type: string
 
 jobs:
-  tag-image:
-    name: Tag Image
-    uses: ./.github/workflows/tag.yml
-    secrets: inherit
-
   publish:
-    name: Publish Image
-    needs:
-      - tag-image
+    name: Build & Publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,8 +19,7 @@ jobs:
           echo ${{ secrets.GHCR_PAT }} | docker login -u ${{ github.actor }} ${{ env.REGISTRY }} --password-stdin
       - name: Publish
         env:
-          IMAGE_NAME: ${{ env.REGISTRY }}/likeajohny/portfolio:${{ needs.tag-image.outputs.image-tag }}
+          IMAGE_NAME: ${{ env.REGISTRY }}/likeajohny/portfolio:${{ inputs.image-tag }}
         run: |
           docker build . -f docker/Prod.Dockerfile -t ${{ env.IMAGE_NAME }}
           docker push ${{ env.IMAGE_NAME }}
-          

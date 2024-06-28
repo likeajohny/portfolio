@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  tag:
+    name: Tag
+    uses: ./.github/workflows/tag.yml
+    secrets: inherit
+
+  publish:
+    name: Build & Publish
+    needs:
+      - tag
+    uses: ./.github/workflows/publish.yml
+    with:
+      image-tag: ${{ needs.tag.outputs.image-tag }}
+
+  deploy:
+    name: Deploy
+    needs:
+      - publish
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      image-tag: ${{ needs.tag.outputs.image-tag }}
