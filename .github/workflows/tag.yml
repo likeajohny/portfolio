@@ -1,5 +1,3 @@
-name: Tag Image
-
 on:
   workflow_call:
     outputs:
