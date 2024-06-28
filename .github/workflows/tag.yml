@@ -1,0 +1,27 @@
+name: Tag Image
+
+on:
+  workflow_call:
+    outputs:
+      image-tag:
+        value: ${{ jobs.tag-image.outputs.image-tag }}
+
+jobs:
+  tag-image:
+    name: Tag Image
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.get-image-tag.outputs.result }}
+    steps:
+      - uses: actions/github-script@v7
+        id: get-image-tag
+        with:
+          result-encoding: string
+          script: |
+            const tagPrefix = 'refs/tags/v';
+            
+            if (process.env.GITHUB_REF.startsWith(tagPrefix)) {
+              return process.env.GITHUB_REF.slice(tagPrefix.length);
+            } else {
+              return 'latest';
+            }
