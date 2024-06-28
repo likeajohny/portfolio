@@ -1,19 +1,10 @@
 on:
   workflow_call:
     inputs:
-      image-tag:
-        description: 'Tag of the image to deploy'
+      image-name:
+        description: 'Name of the image to deploy'
         required: true
         type: string
-  workflow_dispatch:
-    inputs:
-      image-tag:
-        description: 'Tag of the image to deploy'
-        required: true
-        default: 'latest'
-
-env:
-  REGISTRY: ghcr.io
 
 jobs:
   deploy:
@@ -30,9 +21,9 @@ jobs:
       - name: Deploy application
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} << 'EOF'
-            echo ${{ secrets.GHCR_PAT }} | docker login -u ${{ github.actor }} ${{ env.REGISTRY }} --password-stdin
+            echo ${{ secrets.GHCR_PAT }} | docker login -u ${{ github.actor }} ghcr.io --password-stdin
           
-            docker pull ghcr.io/likeajohny/portfolio:${{ inputs.image-tag }}
+            docker pull ${{ inputs.image-name }}
           
             docker logout ${{ env.REGISTRY }}
           EOF
