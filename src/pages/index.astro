@@ -1,12 +1,13 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import Layout from '../layouts/Layout.astro';
+
+const host = window.location.host;
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
-
-		<h1>Welcome to <span class="text-gradient">likeajohny.com</span></h1>
+		<h1>Welcome to <span class="text-gradient">{host}</span></h1>
 		<p class="instructions">
 			This page is currently <code>under construction</code><br />
 			<strong>Check back</strong> later to see if I found time to actually <code>build</code> something.
