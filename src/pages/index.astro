@@ -1,13 +1,12 @@
 ---
 import Card from '../components/Card.astro';
+import Hostname from '../components/Hostname.svelte';
 import Layout from '../layouts/Layout.astro';
-
-const host = new URL(Astro.request.url).hostname;
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
-		<h1>Welcome to <span class="text-gradient">{host}</span></h1>
+		<h1>Welcome to <Hostname client:load /></h1>
 		<p class="instructions">
 			This page is currently <code>under construction</code><br />
 			<strong>Check back</strong> later to see if I found time to actually <code>build</code> something.
