@@ -13,5 +13,9 @@
     "@astrojs/check": "^0.9.4",
     "astro": "^5.14.1",
     "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@10.0.0",
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
